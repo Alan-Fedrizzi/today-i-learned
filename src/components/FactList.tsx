@@ -1,4 +1,4 @@
-import { INITIAL_FACTS } from "../App";
+import { INITIAL_FACTS } from "../model";
 import Fact from "./Fact";
 
 function FactList() {

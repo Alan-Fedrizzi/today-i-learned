@@ -1,4 +1,4 @@
-import { CATEGORIES, type IFact } from "../App";
+import { IFact } from "../model";
 import Button from "./Button";
 
 interface FactProps {
@@ -14,12 +14,6 @@ function Fact({ fact }: FactProps) {
     votesMindblowing,
     votesFalse,
   } = fact;
-  const categories = CATEGORIES;
-
-  function getCategoryColor(category: string): string {
-    const foundCategory = categories.find((cat) => cat.name === category);
-    return foundCategory ? foundCategory.color : "transparent";
-  }
 
   return (
     <li className="fact">
@@ -29,14 +23,7 @@ function Fact({ fact }: FactProps) {
           (Source)
         </a>
       </p>
-      <span
-        className="tag"
-        style={{
-          backgroundColor: getCategoryColor(category),
-        }}
-      >
-        {category}
-      </span>
+      <span className={`tag bg-${category}`}>{category}</span>
       <div className="vote-buttons">
         <Button mode="interesting" votes={votesInteresting} />
         <Button mode="mindblowing" votes={votesMindblowing} />

@@ -172,6 +172,42 @@ ul {
   background-image: none;
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-technology {
+  background-color: #3b82f6;
+}
+
+.bg-science {
+  background-color: #16a34a;
+}
+
+.bg-finance {
+  background-color: #ef4444;
+}
+
+.bg-society {
+  background-color: #eab308;
+}
+
+.bg-entertainment {
+  background-color: #db2777;
+}
+
+.bg-health {
+  background-color: #14b8a6;
+}
+
+.bg-history {
+  background-color: #f97316;
+}
+
+.bg-news {
+  background-color: #8b5cf6;
+}
+
 /* FORM */
 .fact-form {
   background-color: #44403c;
