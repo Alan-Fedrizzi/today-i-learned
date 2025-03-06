@@ -213,10 +213,13 @@ ul {
   background-color: #44403c;
   margin-bottom: 40px;
   padding: 16px 32px;
+  border-radius: 16px;
+}
+
+.fact-form-container {
   display: flex;
   align-items: center;
   gap: 16px;
-  border-radius: 16px;
 }
 
 .fact-form input,
@@ -243,6 +246,14 @@ ul {
   font-weight: 600;
   font-size: 18px;
   margin-right: 18px;
+}
+
+.fact-form-option {
+  text-transform: capitalize;
+}
+
+.fact-form-message {
+  margin-top: 16px;
 }
 
 @media (max-width: 1000px) {

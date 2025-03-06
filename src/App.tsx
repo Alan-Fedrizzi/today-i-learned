@@ -1,29 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import CategoryFilter from "./components/CategoryFilter";
 import NewFactForm from "./components/NewFactForm";
 import FactList from "./components/FactList";
+import Header from "./components/Header";
 
 function App() {
+  const [showForm, setShowForm] = useState(false);
+
+  function handleToggleForm() {
+    setShowForm((previousValue) => !previousValue);
+  }
+
   return (
     <>
-      {/* header */}
-      <header className="header">
-        <div className="logo">
-          {/* assets estão na pasta public */}
-          <img
-            src="logo.png"
-            height="68"
-            width="68"
-            alt="Today I Learned Logo"
-          />
-          <h1>Today I Learned</h1>
-        </div>
+      <Header showForm={showForm} handleToggleForm={handleToggleForm} />
 
-        <button className="btn btn-large btn-open">Share a fact</button>
-      </header>
-
-      <NewFactForm />
+      {showForm && <NewFactForm setShowForm={setShowForm} />}
 
       <main className="main">
         <CategoryFilter />
