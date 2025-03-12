@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { CATEGORIES, ICategory } from "../model";
+import { CATEGORIES, ICategory, IFact } from "../model";
 
 interface NewFactFormProps {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+  setFacts: React.Dispatch<React.SetStateAction<IFact[]>>;
 }
 
 // se usar em mais lugares, criar uma util
@@ -15,7 +16,7 @@ function isValidURL(str: string): boolean {
   }
 }
 
-function NewFactForm({ setShowForm }: NewFactFormProps) {
+function NewFactForm({ setShowForm, setFacts }: NewFactFormProps) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://example.com");
   const [category, setCategory] = useState("");
@@ -34,7 +35,6 @@ function NewFactForm({ setShowForm }: NewFactFormProps) {
     setShowFormInvalidMessage(false);
 
     // is source a valid url?
-
     // check if data is valid
     if (!text || !source || !category || !isValidURL(source)) {
       setShowFormInvalidMessage(true);
@@ -55,6 +55,7 @@ function NewFactForm({ setShowForm }: NewFactFormProps) {
 
     // add to list
     console.log(newFact.id);
+    setFacts((previousFacts) => [newFact, ...previousFacts]);
 
     // reset fields
     setText("");

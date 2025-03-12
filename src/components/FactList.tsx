@@ -1,9 +1,11 @@
-import { INITIAL_FACTS } from "../model";
+import { IFact } from "../model";
 import Fact from "./Fact";
 
-function FactList() {
-  const facts = INITIAL_FACTS;
+interface FactListProps {
+  facts: IFact[];
+}
 
+function FactList({ facts }: FactListProps) {
   return (
     <section>
       <ul className="facts-list">
