@@ -1,4 +1,4 @@
-export type CategoyName =
+export type CategoryName =
   | "technology"
   | "science"
   | "finance"
@@ -10,7 +10,7 @@ export type CategoyName =
   | "all";
 
 export interface ICategory {
-  name: CategoyName;
+  name: CategoryName;
   color: string;
 }
 

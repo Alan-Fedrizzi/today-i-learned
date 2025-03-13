@@ -5,17 +5,19 @@ import NewFactForm from "./components/NewFactForm";
 import FactList from "./components/FactList";
 import Header from "./components/Header";
 import supabase from "./supabase";
-import { IFact } from "./model";
+import { CategoryName, IFact } from "./model";
 import Loader from "./components/Loader";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [facts, setFacts] = useState<IFact[]>([]);
+  const [showedFacts, setShowedFacts] = useState<IFact[]>([]);
+  const [filter, setFilter] = useState<CategoryName>("all");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // queremos pegar os dados qd carrega o componente, não em casa render
-  useEffect(function () {
+  useEffect(() => {
     async function getFacts() {
       try {
         setLoading(true);
@@ -29,6 +31,7 @@ function App() {
 
         if (!error && facts) {
           setFacts(facts as IFact[]);
+          setShowedFacts(facts as IFact[]);
         } else {
           console.error(error);
           setError(true);
@@ -44,6 +47,15 @@ function App() {
     getFacts();
   }, []);
 
+  useEffect(() => {
+    if (filter === "all") {
+      setShowedFacts(facts);
+    } else {
+      const filteredFacts = facts.filter((fact) => fact.category === filter);
+      setShowedFacts(filteredFacts);
+    }
+  }, [facts, filter]);
+
   function handleToggleForm() {
     setShowForm((previousValue) => !previousValue);
   }
@@ -57,14 +69,14 @@ function App() {
       )}
 
       <main className="main">
-        <CategoryFilter />
+        <CategoryFilter filter={filter} setFilter={setFilter} />
 
         {error ? (
           <p>Ops... An error occur, try again.</p>
         ) : loading ? (
           <Loader />
         ) : (
-          <FactList facts={facts} />
+          <FactList facts={showedFacts} />
         )}
       </main>
     </>

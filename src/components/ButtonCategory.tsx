@@ -1,14 +1,19 @@
-import { CategoyName } from "../model";
+import { CategoryName } from "../model";
 
 interface ButtonCategoryProps {
-  name: CategoyName;
+  name: CategoryName;
+  handleButtonClick: () => void;
 }
 
-function ButtonCategory({ name }: ButtonCategoryProps) {
+function ButtonCategory({ name, handleButtonClick }: ButtonCategoryProps) {
   const cssClassNames =
     name === "all" ? `btn btn-all-categories` : `btn btn-category bg-${name}`;
 
-  return <button className={cssClassNames}>{name}</button>;
+  return (
+    <button className={cssClassNames} onClick={handleButtonClick}>
+      {name}
+    </button>
+  );
 }
 
 export default ButtonCategory;
