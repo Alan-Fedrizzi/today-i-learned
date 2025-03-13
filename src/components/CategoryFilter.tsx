@@ -2,11 +2,10 @@ import { CATEGORIES, ICategory, CategoryName } from "../model";
 import ButtonCategory from "./ButtonCategory";
 
 interface CategoryFilterProps {
-  filter: CategoryName;
   setFilter: React.Dispatch<React.SetStateAction<CategoryName>>;
 }
 
-function CategoryFilter({ filter, setFilter }: CategoryFilterProps) {
+function CategoryFilter({ setFilter }: CategoryFilterProps) {
   const categories = CATEGORIES;
 
   return (

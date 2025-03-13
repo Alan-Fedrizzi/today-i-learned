@@ -69,7 +69,7 @@ function App() {
       )}
 
       <main className="main">
-        <CategoryFilter filter={filter} setFilter={setFilter} />
+        <CategoryFilter setFilter={setFilter} />
 
         {error ? (
           <p>Ops... An error occur, try again.</p>
