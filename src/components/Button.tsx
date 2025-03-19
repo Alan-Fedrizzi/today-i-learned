@@ -1,14 +1,15 @@
 interface ButtonProps {
   votes: number;
   mode: "interesting" | "mindblowing" | "false";
+  handleVote: () => void;
 }
 
-function Button({ votes, mode }: ButtonProps) {
+function Button({ votes, mode, handleVote }: ButtonProps) {
   const emoji =
     mode === "interesting" ? "👍" : mode === "mindblowing" ? "🤯" : "⛔️";
 
   return (
-    <button>
+    <button onClick={handleVote}>
       {emoji} {votes}
     </button>
   );

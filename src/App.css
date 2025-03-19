@@ -344,3 +344,8 @@ ul {
 .toast--success {
   background-color: #16a34a;
 }
+
+[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}

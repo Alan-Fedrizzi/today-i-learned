@@ -1,4 +1,5 @@
 import { IFact } from "../model";
+import supabase from "../supabase";
 import Button from "./Button";
 
 interface FactProps {
@@ -7,6 +8,7 @@ interface FactProps {
 
 function Fact({ fact }: FactProps) {
   const {
+    id,
     text,
     source,
     category,
@@ -14,6 +16,20 @@ function Fact({ fact }: FactProps) {
     votesMindblowing,
     votesFalse,
   } = fact;
+
+  async function handleVote() {
+    console.log("handleVote");
+
+    const { data: updatedFact, error } = await supabase
+      .from("facts")
+      .update({
+        votesInteresting: votesInteresting + 1,
+      })
+      .eq("id", id)
+      .select();
+
+    console.log(updatedFact);
+  }
 
   return (
     <li className="fact">
@@ -25,9 +41,17 @@ function Fact({ fact }: FactProps) {
       </p>
       <span className={`tag bg-${category}`}>{category}</span>
       <div className="vote-buttons">
-        <Button mode="interesting" votes={votesInteresting} />
-        <Button mode="mindblowing" votes={votesMindblowing} />
-        <Button mode="false" votes={votesFalse} />
+        <Button
+          mode="interesting"
+          votes={votesInteresting}
+          handleVote={handleVote}
+        />
+        <Button
+          mode="mindblowing"
+          votes={votesMindblowing}
+          handleVote={handleVote}
+        />
+        <Button mode="false" votes={votesFalse} handleVote={handleVote} />
       </div>
     </li>
   );
