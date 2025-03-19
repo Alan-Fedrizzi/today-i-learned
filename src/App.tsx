@@ -5,8 +5,9 @@ import NewFactForm from "./components/NewFactForm";
 import FactList from "./components/FactList";
 import Header from "./components/Header";
 import supabase from "./supabase";
-import { CategoryName, IFact } from "./model";
+import { CategoryName, IFact, IToast } from "./model";
 import Loader from "./components/Loader";
+import Toast from "./components/Toast";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
@@ -15,6 +16,11 @@ function App() {
   const [filter, setFilter] = useState<CategoryName>("all");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toast, setToast] = useState<IToast>({
+    message: "",
+    state: "success",
+  });
 
   // queremos pegar os dados qd carrega o componente, não em casa render
   useEffect(() => {
@@ -33,12 +39,10 @@ function App() {
           setFacts(facts as IFact[]);
           setShowedFacts(facts as IFact[]);
         } else {
-          console.error(error);
-          setError(true);
+          handleError(error);
         }
       } catch (error) {
-        console.error(error);
-        setError(true);
+        handleError(error);
       } finally {
         setLoading(false);
       }
@@ -60,12 +64,29 @@ function App() {
     setShowForm((previousValue) => !previousValue);
   }
 
+  function handleError(error: any) {
+    if (!error) return;
+
+    console.error(error);
+    setError(true);
+    setToast({
+      message: "Ops... An error occur, try again.",
+      state: "error",
+    });
+    setShowToast(true);
+  }
+
   return (
     <>
       <Header showForm={showForm} handleToggleForm={handleToggleForm} />
 
       {showForm && (
-        <NewFactForm setShowForm={setShowForm} setFacts={setFacts} />
+        <NewFactForm
+          setShowForm={setShowForm}
+          setFacts={setFacts}
+          setToast={setToast}
+          setShowToast={setShowToast}
+        />
       )}
 
       <main className="main">
@@ -79,6 +100,14 @@ function App() {
           <FactList facts={showedFacts} />
         )}
       </main>
+
+      {showToast && (
+        <Toast
+          message={toast.message}
+          state={toast.state}
+          setShowToast={setShowToast}
+        />
+      )}
     </>
   );
 }

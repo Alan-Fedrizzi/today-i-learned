@@ -69,3 +69,8 @@ export const INITIAL_FACTS: IFact[] = [
     createdIn: 2015,
   },
 ];
+
+export interface IToast {
+  message: string;
+  state: "error" | "success";
+}

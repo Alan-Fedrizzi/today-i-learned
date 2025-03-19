@@ -319,3 +319,28 @@ ul {
       calc(-9 * var(--w)) 0;
   }
 }
+
+/* toast */
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in;
+}
+
+.toast--show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast--error {
+  background-color: #ef4444;
+}
+
+.toast--success {
+  background-color: #16a34a;
+}
