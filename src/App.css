@@ -17,7 +17,7 @@ body {
 
 /* MAIN LAYOUT */
 #root {
-  max-width: 1500px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -32,12 +32,6 @@ body {
   display: grid;
   grid-template-columns: 250px 1fr;
   gap: 48px;
-}
-
-@media (max-width: 900px) {
-  .main {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ELEMENTS */
@@ -75,16 +69,9 @@ h1 {
   border-radius: 16px;
 
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 24px;
-}
-
-@media (max-width: 1200px) {
-  .fact {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
-  }
 }
 
 .tag {
@@ -214,17 +201,41 @@ ul {
   margin-bottom: 40px;
   padding: 16px 32px;
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.fact-form-container {
+/* .fact-form-container {
   display: flex;
   align-items: center;
   gap: 16px;
+} */
+
+.fact-form__input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fact-form__input {
+  width: 100%;
+}
+
+.fact-form__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.fact-form__button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .fact-form input,
 .fact-form select {
-  width: 220px;
   background-color: #78716c;
   border: none;
   border-radius: 100px;
@@ -256,22 +267,6 @@ ul {
   margin-top: 16px;
 }
 
-@media (max-width: 1000px) {
-  body {
-    padding: 32px 48px;
-  }
-
-  .fact-form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .fact-form input,
-  .fact-form select {
-    width: auto;
-  }
-}
-
 /* HTML: <div class="loader"></div> */
 .loader {
   --w: 10ch;
@@ -288,9 +283,11 @@ ul {
     calc(-9 * var(--w)) 0;
   animation: l16 2s infinite;
 }
+
 .loader:before {
   content: "Loading...";
 }
+
 @keyframes l16 {
   20% {
     text-shadow: calc(-1 * var(--w)) 0, calc(-2 * var(--w)) 0 red,
@@ -348,4 +345,63 @@ ul {
 [disabled] {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* reponsiveness */
+@media (max-width: 1200px) {
+  .fact {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+    padding: 32px 48px;
+  }
+
+  .fact-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fact-form input,
+  .fact-form select {
+    width: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .fact-form__info {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 24px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .logo h1 {
+    text-align: center;
+  }
+
+  .fact-form {
+    padding: 16px;
+  }
+
+  .fact {
+    padding: 12px 16px;
+  }
 }

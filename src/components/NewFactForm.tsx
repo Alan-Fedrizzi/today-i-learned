@@ -30,7 +30,6 @@ function NewFactForm({
   const [category, setCategory] = useState("");
   const [showFormInvalidMessage, setShowFormInvalidMessage] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState(false);
   const categories = CATEGORIES;
   const maxLength = 200;
 
@@ -70,10 +69,7 @@ function NewFactForm({
 
     // upload fact do supabase and receive the new fact object
     try {
-      setError(false);
       setIsUploading(true);
-
-      // throw new Error();
 
       // renomeamos o data que recebemos para newFact
       const { data: newFact, error } = await supabase
@@ -90,15 +86,15 @@ function NewFactForm({
 
       // newFact é um array com o objeto criado entro
       // console.log(newFact, error);
-      if (newFact?.length && !error) {
+      if (error) {
+        throw new Error(`Error updating vote: ${error.message}`);
+      } else if (newFact?.length) {
         setFacts((previousFacts) => [newFact[0], ...previousFacts]);
         setToast({
           message: "Fact upload successfully",
           state: "success",
         });
         setShowToast(true);
-      } else {
-        handleError(error);
       }
     } catch (error) {
       handleError(error);
@@ -119,7 +115,6 @@ function NewFactForm({
     if (!error) return;
 
     console.error(error);
-    setError(true);
     setToast({
       message: "Ops... An error occur, try again.",
       state: "error",
@@ -129,8 +124,9 @@ function NewFactForm({
 
   return (
     <form className="fact-form" onSubmit={handleSubmit}>
-      <div className="fact-form-container">
+      <div className="fact-form__input-container">
         <input
+          className="fact-form__input"
           type="text"
           placeholder="Share a fact with the world..."
           value={text}
@@ -138,7 +134,11 @@ function NewFactForm({
           disabled={isUploading}
         />
         <span>{maxLength - text.length}</span>
+      </div>
+
+      <div className="fact-form__info">
         <input
+          className="fact-form__input"
           type="text"
           placeholder="Trustworthy source..."
           value={source}
@@ -146,6 +146,7 @@ function NewFactForm({
           disabled={isUploading}
         />
         <select
+          className="fact-form__input"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           disabled={isUploading}
@@ -162,6 +163,9 @@ function NewFactForm({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="fact-form__button">
         <button className="btn btn-large" disabled={isUploading}>
           {isUploading ? "Uploading" : "Post"}
         </button>

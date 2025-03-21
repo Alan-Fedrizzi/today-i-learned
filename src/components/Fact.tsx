@@ -1,12 +1,17 @@
-import { IFact } from "../model";
+import { useState } from "react";
+import { IFact, IToast } from "../model";
 import supabase from "../supabase";
 import Button from "./Button";
 
 interface FactProps {
   fact: IFact;
+  setFacts: React.Dispatch<React.SetStateAction<IFact[]>>;
+  setToast: React.Dispatch<React.SetStateAction<IToast>>;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Fact({ fact }: FactProps) {
+function Fact({ fact, setFacts, setToast, setShowToast }: FactProps) {
+  const [isUpdating, setIsUpdating] = useState(false);
   const {
     id,
     text,
@@ -17,18 +22,48 @@ function Fact({ fact }: FactProps) {
     votesFalse,
   } = fact;
 
-  async function handleVote() {
-    console.log("handleVote");
+  async function handleVote(
+    voteType: "votesInteresting" | "votesMindblowing" | "votesFalse"
+  ) {
+    // console.log("handleVote");
 
-    const { data: updatedFact, error } = await supabase
-      .from("facts")
-      .update({
-        votesInteresting: votesInteresting + 1,
-      })
-      .eq("id", id)
-      .select();
+    try {
+      setIsUpdating(true);
 
-    console.log(updatedFact);
+      const { data, error } = await supabase
+        .from("facts")
+        .update({
+          [voteType]: fact[voteType] + 1,
+        })
+        .eq("id", id)
+        .select();
+
+      const updatedFact = data as IFact[] | null;
+      // console.log(updatedFact);
+
+      if (error) {
+        throw new Error(`Error updating vote: ${error.message}`);
+      } else if (updatedFact?.length) {
+        setFacts((facts) =>
+          facts.map((f: IFact) => (f.id === fact.id ? updatedFact[0] : f))
+        );
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsUpdating(false);
+    }
+  }
+
+  function handleError(error: any) {
+    if (!error) return;
+
+    console.error(error);
+    setToast({
+      message: "Ops... An error occur, try again.",
+      state: "error",
+    });
+    setShowToast(true);
   }
 
   return (
@@ -44,14 +79,21 @@ function Fact({ fact }: FactProps) {
         <Button
           mode="interesting"
           votes={votesInteresting}
-          handleVote={handleVote}
+          handleVote={() => handleVote("votesInteresting")}
+          disabled={isUpdating}
         />
         <Button
           mode="mindblowing"
           votes={votesMindblowing}
-          handleVote={handleVote}
+          handleVote={() => handleVote("votesMindblowing")}
+          disabled={isUpdating}
         />
-        <Button mode="false" votes={votesFalse} handleVote={handleVote} />
+        <Button
+          mode="false"
+          votes={votesFalse}
+          handleVote={() => handleVote("votesFalse")}
+          disabled={isUpdating}
+        />
       </div>
     </li>
   );

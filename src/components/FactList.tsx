@@ -1,18 +1,27 @@
-import { IFact } from "../model";
+import { IFact, IToast } from "../model";
 import Fact from "./Fact";
 
 interface FactListProps {
   facts: IFact[];
+  setFacts: React.Dispatch<React.SetStateAction<IFact[]>>;
+  setToast: React.Dispatch<React.SetStateAction<IToast>>;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function FactList({ facts }: FactListProps) {
+function FactList({ facts, setFacts, setToast, setShowToast }: FactListProps) {
   return (
     <section>
       {facts.length ? (
         <>
           <ul className="facts-list">
             {facts.map((fact) => (
-              <Fact fact={fact} key={fact.id} />
+              <Fact
+                fact={fact}
+                setFacts={setFacts}
+                setToast={setToast}
+                setShowToast={setShowToast}
+                key={fact.id}
+              />
             ))}
           </ul>
 

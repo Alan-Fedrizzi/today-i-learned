@@ -35,11 +35,11 @@ function App() {
           .order("votesInteresting", { ascending: false })
           .limit(100);
 
-        if (!error && facts) {
+        if (error) {
+          throw new Error(`Error updating vote: ${error.message}`);
+        } else if (facts) {
           setFacts(facts as IFact[]);
           setShowedFacts(facts as IFact[]);
-        } else {
-          handleError(error);
         }
       } catch (error) {
         handleError(error);
@@ -97,7 +97,12 @@ function App() {
         ) : loading ? (
           <Loader />
         ) : (
-          <FactList facts={showedFacts} />
+          <FactList
+            facts={showedFacts}
+            setFacts={setFacts}
+            setToast={setToast}
+            setShowToast={setShowToast}
+          />
         )}
       </main>
 
