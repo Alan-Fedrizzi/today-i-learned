@@ -7,40 +7,26 @@ interface ToastProps {
 }
 
 function Toast({ message, state, setShowToast }: ToastProps) {
-  const [timeoutIds, setTimeoutIds] = useState<ReturnType<typeof setTimeout>[]>(
-    []
-  );
-  const [animate, setAnimate] = useState(false);
+  const [timeoutId, setTimeoutId] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
 
   useEffect(() => {
-    setAnimate(true);
-
-    // First timeout
-    const timeout1 = setTimeout(() => {
-      setAnimate(false);
+    const id = setTimeout(() => {
+      setShowToast(false);
     }, 3_000);
 
-    // Second timeout
-    const timeout2 = setTimeout(() => {
-      setShowToast(false);
-    }, 3_300);
+    setTimeoutId(id);
 
-    // Store the timeout IDs
-    setTimeoutIds([timeout1, timeout2]);
-
-    // Cleanup function to clear both timeouts
+    // Cleanup function to clear the timeout when component unmounts
     return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-      setTimeoutIds([]);
+      if (id) {
+        clearTimeout(id);
+      }
     };
   }, [setShowToast]);
 
-  return (
-    <div className={`toast toast--${state} ${animate ? "toast--show" : ""}`}>
-      {message}
-    </div>
-  );
+  return <div className={`toast toast--${state}`}>{message}</div>;
 }
 
 export default Toast;

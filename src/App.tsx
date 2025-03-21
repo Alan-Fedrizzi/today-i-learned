@@ -8,6 +8,7 @@ import supabase from "./supabase";
 import { CategoryName, IFact, IToast } from "./model";
 import Loader from "./components/Loader";
 import Toast from "./components/Toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 function App() {
   const [showForm, setShowForm] = useState(false);
@@ -80,14 +81,23 @@ function App() {
     <>
       <Header showForm={showForm} handleToggleForm={handleToggleForm} />
 
-      {showForm && (
-        <NewFactForm
-          setShowForm={setShowForm}
-          setFacts={setFacts}
-          setToast={setToast}
-          setShowToast={setShowToast}
-        />
-      )}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+            animate={{ opacity: 1, height: "auto", marginBottom: "40px" }}
+            exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <NewFactForm
+              setShowForm={setShowForm}
+              setFacts={setFacts}
+              setToast={setToast}
+              setShowToast={setShowToast}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="main">
         <CategoryFilter setFilter={setFilter} />
@@ -106,13 +116,22 @@ function App() {
         )}
       </main>
 
-      {showToast && (
-        <Toast
-          message={toast.message}
-          state={toast.state}
-          setShowToast={setShowToast}
-        />
-      )}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Toast
+              message={toast.message}
+              state={toast.state}
+              setShowToast={setShowToast}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
